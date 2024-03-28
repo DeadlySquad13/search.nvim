@@ -9,13 +9,12 @@ local describe = describe
 local it = it
 local before_each = before_each
 
-describe("can configure search.nvim", function()
+describe('can configure search.nvim', function()
 	before_each(function()
 		_tabs.tab_list = {}
 	end)
 
-
-	it("can use default config", function()
+	it('can use default config', function()
 		init.setup()
 
 		local tabs = _tabs.all()
@@ -25,14 +24,16 @@ describe("can configure search.nvim", function()
 		eq('Grep', tabs[3].name)
 	end)
 
-	it("can append a tab using long syntax", function()
+	it('can append a tab using long syntax', function()
 		local config = {
 			append_tabs = {
 				{
-					"Custom",
-					function() return "custom" end
-				}
-			}
+					'Custom',
+					function()
+						return 'custom'
+					end,
+				},
+			},
 		}
 
 		init.setup(config)
@@ -41,12 +42,17 @@ describe("can configure search.nvim", function()
 		eq('custom', _tabs.all()[4].tele_func())
 	end)
 
-	it("can append a tab using short syntax", function()
+	it('can append a tab using short syntax', function()
 		_tabs.tab_list = {}
 		local config = {
 			append_tabs = {
-				{ "Custom", function() return "custom" end }
-			}
+				{
+					'Custom',
+					function()
+						return 'custom'
+					end,
+				},
+			},
 		}
 
 		init.setup(config)
@@ -55,11 +61,16 @@ describe("can configure search.nvim", function()
 		eq('custom', _tabs.all()[4].tele_func())
 	end)
 
-	it("can append tab using partially short syntax", function()
+	it('can append tab using partially short syntax', function()
 		local config = {
 			append_tabs = {
-				{ "Custom", tele_func = function() return "custom" end }
-			}
+				{
+					'Custom',
+					tele_func = function()
+						return 'custom'
+					end,
+				},
+			},
 		}
 
 		init.setup(config)
@@ -68,11 +79,16 @@ describe("can configure search.nvim", function()
 		eq('custom', _tabs.all()[4].tele_func())
 	end)
 
-	it("can append tab using partially short syntax2", function()
+	it('can append tab using partially short syntax2', function()
 		local config = {
 			append_tabs = {
-				{ name = "Custom", function() return "custom" end }
-			}
+				{
+					name = 'Custom',
+					function()
+						return 'custom'
+					end,
+				},
+			},
 		}
 
 		init.setup(config)
@@ -81,9 +97,19 @@ describe("can configure search.nvim", function()
 		eq('custom', _tabs.all()[4].tele_func())
 	end)
 
-	it("can define a available function", function()
+	it('can define a available function', function()
 		local config = {
-			tabs = { { "Custom", function() return "custom" end, available = function() return false end } }
+			tabs = {
+				{
+					'Custom',
+					function()
+						return 'custom'
+					end,
+					available = function()
+						return false
+					end,
+				},
+			},
 		}
 
 		init.setup(config)
@@ -93,12 +119,12 @@ describe("can configure search.nvim", function()
 		eq(false, _tabs.all()[1]:is_available())
 	end)
 
-	it("can configure mappings", function()
+	it('can configure mappings', function()
 		local config = {
 			mappings = {
 				next = '<leader>l',
 				prev = '<leader>h',
-			}
+			},
 		}
 
 		init.setup(config)
@@ -106,7 +132,7 @@ describe("can configure search.nvim", function()
 		eq('<leader>h', _settings.keys.prev)
 	end)
 
-	it("has default mappings", function()
+	it('has default mappings', function()
 		init.setup()
 		eq('<Tab>', _settings.keys.next)
 		eq('<S-Tab>', _settings.keys.prev)

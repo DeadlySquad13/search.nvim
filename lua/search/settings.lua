@@ -5,8 +5,8 @@ M.default_initial_tab = 1
 M.initialized = false
 
 M.default_keys = {
-	next = { { "<Tab>", "n" }, { "<Tab>", "i" } },
-	prev = { { "<S-Tab>", "n" }, { "<S-Tab>", "i" } },
+	next = { { '<Tab>', 'n' }, { '<Tab>', 'i' } },
+	prev = { { '<S-Tab>', 'n' }, { '<S-Tab>', 'i' } },
 }
 
 M.keys = vim.deepcopy(M.default_keys)
@@ -14,18 +14,18 @@ M.keys = vim.deepcopy(M.default_keys)
 local builtin = require('telescope.builtin')
 M.defaults = {
 	{
-		"Files",
+		'Files',
 		builtin.find_files,
 	},
 	{
-		"Git files",
+		'Git files',
 		builtin.git_files,
 		available = function()
-			return vim.fn.isdirectory(".git") == 1
-		end
+			return vim.fn.isdirectory('.git') == 1
+		end,
 	},
 	{
-		"Grep",
+		'Grep',
 		builtin.live_grep,
 	},
 }
@@ -74,7 +74,7 @@ M.setup = function(opts)
 		initial_tab = opts.initial_tab
 	end
 
-	require("search.tabs").init({
+	require('search.tabs').init({
 		tabs = tabs,
 		collections = collections,
 		initial_id = initial_tab,
@@ -82,6 +82,5 @@ M.setup = function(opts)
 
 	M.initialized = true
 end
-
 
 return M

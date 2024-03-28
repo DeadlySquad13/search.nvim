@@ -1,4 +1,3 @@
-
 local Tab = {}
 
 --- @class Tab
@@ -15,7 +14,7 @@ function Tab:new(tab, id)
 
 	-- this enables the user to define the function as second argument
 	-- even if the first argument is named as name
-	if name ~= nil and tab[1] ~= nil and type(tab[1]) == "function" then
+	if name ~= nil and tab[1] ~= nil and type(tab[1]) == 'function' then
 		tele_func = tab[1]
 	end
 

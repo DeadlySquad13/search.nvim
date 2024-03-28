@@ -1,18 +1,17 @@
 local M = {}
 
-TabCollection = require("search.tabs.collection")
+TabCollection = require('search.tabs.collection')
 ---
 
 M.collections = {}
 
-M.current_collection_id = "default"
+M.current_collection_id = 'default'
 
 --- get all tabs
 --- @return table # list of all tabs
 M.all = function()
 	return M.current_collection():all()
 end
-
 
 M.current_collection = function()
 	return M.collections[M.current_collection_id]
@@ -23,7 +22,7 @@ end
 -- - tabs: list of tabs
 -- - inital_tab: id of the tab to start with
 M.init = function(opts)
-	M.collections["default"] = TabCollection:new(opts)
+	M.collections['default'] = TabCollection:new(opts)
 	for id, collection_config in pairs(opts.collections) do
 		local collection = TabCollection:new(collection_config)
 		M.collections[id] = collection
@@ -34,7 +33,6 @@ end
 M.current = function()
 	return M.current_collection():current()
 end
-
 
 --- get the next tab
 --- @return Tab # the next tab

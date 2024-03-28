@@ -5,7 +5,6 @@ local settings = require('search.settings')
 local tab_bar = require('search.tab_bar')
 local tabs = require('search.tabs')
 
-
 --- opens the tab window and anchors it to the telescope window
 --- @param telescope_win_id number the id of the telescope window
 --- @return nil
@@ -30,7 +29,7 @@ local tab_window = function(telescope_win_id)
 
 	-- make this window disappear when the telescope window is closed
 	local tele_buf = vim.api.nvim_get_current_buf()
-	vim.api.nvim_create_autocmd("WinLeave", {
+	vim.api.nvim_create_autocmd('WinLeave', {
 		buffer = tele_buf,
 		nested = true,
 		once = true,
@@ -39,7 +38,6 @@ local tab_window = function(telescope_win_id)
 		end,
 	})
 end
-
 
 --- opens the telescope window and sets the prompt to the one that was used before
 local open_telescope = function()
@@ -69,10 +67,10 @@ local open_telescope = function()
 		return
 	end
 
-
 	-- find a better way to do this
 	-- we might need to wait for the telescope window to open
-	util.do_when(function()
+	util.do_when(
+		function()
 			-- wait for the window change
 			return M.opened_on_win ~= vim.api.nvim_get_current_win()
 		end,
@@ -88,8 +86,8 @@ local open_telescope = function()
 			-- navigating multiple maps at a time.
 			-- If the mode was normal mode before the tab change, then change back to normal mode. This is unless the search
 			-- is being opened using open(), since then then user could be using normal mode in their previous active buffer.
-			if mode == "n" and M.opened_from_buffer == false then
-				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), 'n', false)
+			if mode == 'n' and M.opened_from_buffer == false then
+				vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'n', false)
 			end
 			M.opened_from_buffer = false
 
@@ -110,14 +108,14 @@ local open_telescope = function()
 end
 
 --- the prompt that was used before
-M.current_prompt = ""
+M.current_prompt = ''
 
-M.direction = "next"
+M.direction = 'next'
 
 M.busy = false
 
 M.continue_tab = function(remember)
-	if M.direction == "next" then
+	if M.direction == 'next' then
 		M.next_tab(remember)
 	else
 		M.previous_tab(remember)
@@ -128,7 +126,7 @@ end
 --- only switches to tabs that are available
 M.next_tab = function(remember)
 	remember = remember == nil and true or remember
-	M.direction = "next"
+	M.direction = 'next'
 
 	if M.busy then
 		return
@@ -145,7 +143,7 @@ end
 --- switches to the previous tab, preserving the prompt
 M.previous_tab = function(remember)
 	remember = remember == nil and true or remember
-	M.direction = "previous"
+	M.direction = 'previous'
 
 	if M.busy then
 		return
@@ -171,7 +169,7 @@ end
 M.reset = function(opts)
 	opts = opts or {}
 
-	tabs.current_collection_id = "default"
+	tabs.current_collection_id = 'default'
 	if opts.collection then
 		tabs.current_collection_id = opts.collection
 	end
@@ -184,7 +182,7 @@ M.reset = function(opts)
 		tabs.initial_tab()
 	end
 
-	M.current_prompt = ""
+	M.current_prompt = ''
 	M.opened_on_win = -1
 	M.opened_from_buffer = true
 end
@@ -201,7 +199,6 @@ M.opened_from_buffer = true
 --- opens the telescope window with the current prompt
 --- this is the function that should be called from the outside
 M.open = function(opts)
-
 	-- TODO: find a better way to do this
 	-- this is just a workaround to make sure that the settings are initialized
 	-- if the user did not call setup() themselves
@@ -209,7 +206,7 @@ M.open = function(opts)
 		settings.setup()
 	end
 
-	local prefix = require("telescope.config").values.prompt_prefix or "> "
+	local prefix = require('telescope.config').values.prompt_prefix or '> '
 	M.prefix_len = #prefix
 
 	M.reset(opts)
