@@ -147,7 +147,7 @@ M.next_tab = function(remember)
 		M.remember_prompt()
 	end
 
-	open_telescope()
+	open_telescope(M.collection_tele_opts)
 end
 
 --- switches to the previous tab, preserving the prompt
@@ -164,7 +164,7 @@ M.previous_tab = function(remember)
 		M.remember_prompt()
 	end
 
-	open_telescope()
+	open_telescope(M.collection_tele_opts)
 end
 
 --- remembers the prompt that was used before
@@ -195,6 +195,8 @@ M.reset = function(opts)
 	M.current_prompt = ""
 	M.opened_on_win = -1
 	M.opened_from_buffer = true
+	-- Common for all pickers in a collection tele_opts.
+	M.collection_tele_opts = {}
 end
 
 -- the prefix can be defined in the telescope config, so we need to read
@@ -205,6 +207,8 @@ M.prefix_len = 2
 M.opened_on_win = -1
 
 M.opened_from_buffer = true
+
+M.collection_tele_opts = {}
 
 --- opens the telescope window with the current prompt
 --- this is the function that should be called from the outside
@@ -228,7 +232,10 @@ M.open = function(opts)
 	-- Pass along tele_opts to telescope
 	local tele_func_opts = {}
 	if opts ~= nil then
-		tele_func_opts = opts.tele_opts or {}
+		M.collection_tele_opts = opts.collection_tele_opts or {}
+
+		tele_func_opts = vim.tbl_extend('force', {}, M.collection_tele_opts, opts.tele_opts or {})
+
 		if tele_func_opts.default_text == nil then
 			tele_func_opts.default_text = opts.default_text or ""
 		end
