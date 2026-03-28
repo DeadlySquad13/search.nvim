@@ -183,6 +183,37 @@ require("search").setup({
 })
 ```
 
+#### Passing telescope options for a whole collection
+If you want some options to be shared between handlers in a collection and
+persisted even when cycling between them, consider using
+`collection_tele_opts`.
+
+```lua
+
+-- For instance we have a collection with two tabs for files search.
+require("search").setup({
+  my_files = {
+    initial_tab = 1,
+    tabs = {
+      { name = "Files",      tele_func = builtin.find_files },
+      { name = "All Files",  tele_func = builtin.find_files, tele_opts = { no_ignore = true, hidden = true }},
+      { name = "Config Files",  tele_func = builtin.find_files, tele_opts = { cwd = ".config" }},
+    },
+  }
+})
+
+--   And we want to open this combined file picker in a predefined directory.
+-- Pass a `collection_tele_opts` with `tele_opts` that will be shared among all
+-- tabs. Specific tab `tele_opts` have precedence over collection options.
+--   So both "Files" and "All Files" will run in "test-directory" but 
+-- "Config Files" will stay in ".config" directory.
+require('search').open({
+  collection = 'my_files',
+  collection_tele_opts = { cwd = "test-directory" },
+})
+
+```
+
 ### known issues
 - pickers with more-than-average loading time (like lsp related, or http sending pickers) can feel a bit off, since the UI will wait for them to be ready.
 - heavily custom configured telescope settings (like in many nvim distros) might lead to unexpected errors, please open an issue if you encounter any.
